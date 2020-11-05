@@ -1,0 +1,13 @@
+php artisan tinker
+
+$todos= App\Todo::all();
+
+//to save some data
+$todo->todo="save money"
+$todo->save()
+
+//fake data entry
+factory(App\Todo::class,10)->create();
+
+//delete a record
+$todo = App\Todo::find(25)->delete();
