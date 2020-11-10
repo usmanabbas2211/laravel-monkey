@@ -11,3 +11,8 @@ factory(App\Todo::class,10)->create();
 
 //delete a record
 $todo = App\Todo::find(25)->delete();
+
+//authentication
+
+1)php artisan make:auth
+
