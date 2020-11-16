@@ -98,6 +98,21 @@
                             <li class="list-group-item">
                                 <a href="{{route('posts.trashed')}}">Trashed Posts</a>
                             </li>
+                            <li class="list-group-item">
+                                <a href="{{route('tags')}}">Tags</a>
+                            </li>
+                            <li class="list-group-item">
+                                <a href="{{route('tag.create')}}">Create Tags</a>
+                            </li>
+                            @if(Auth::user()->admin)
+                            <li class="list-group-item">
+                                <a href="{{route('users')}}">All Users</a>
+                            </li>
+                            <li class="list-group-item">
+                                <a href="{{route('user.create')}}">Create Users</a>
+                            </li>
+                            @endif
+                        </ul>
                         </ul>
                     </div>
                     @endif
@@ -107,6 +122,9 @@
                         @endif
                         @if(Session::has('fail'))
                         <p class="alert alert-danger">{{ Session::get('fail') }}</p>
+                        @endif
+                        @if(Session::has('info'))
+                        <p class="alert alert-primary">{{Session::get('info')}}</p>
                         @endif
                         @yield('content')
                     </div>

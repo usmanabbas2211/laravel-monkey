@@ -10,7 +10,8 @@
             <th>Delete</th>
         </thead>
         <tbody>
-            @foreach($posts as $post)
+            @if($posts->count()>0)
+                @foreach($posts as $post)
                 <tr>
                     <td>
                         <img src="{{$post->featured}}" alt="{{$post->title}}" width="90" height="50">
@@ -29,7 +30,12 @@
                         <a class="btn btn-danger btn-sm"  href="{{route('post.kill',['id'=>$post->id])}}">Delete</a>
                     </td>
                 </tr>
-            @endforeach
+                @endforeach
+            @else
+                <tr>
+                    <th colspan="5" class="text-center">No Trashed Posts</th>
+                </tr>
+            @endif
         </tbody>
     </table>
 @endsection

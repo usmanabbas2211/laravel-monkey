@@ -18,4 +18,7 @@ class Post extends Model
     public function getFeaturedAttribute($featured){
         return asset($featured);
     }
+    public function tags(){
+        return $this->belongsToMany('App\tag');
+    }
 }

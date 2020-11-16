@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\category;
 use App\Post;
+use App\Tag;
 use Session;
 use Str;
 class postsController extends Controller
@@ -32,7 +33,8 @@ class postsController extends Controller
             Session::flash('fail','You have to create some category');
             return redirect()->back();
         }
-        return view('admin.posts.create')->with('categories',category::all());
+        return view('admin.posts.create')->with('categories',category::all())
+                                        ->with('tags',Tag::all());
     }
 
     /**
@@ -47,7 +49,8 @@ class postsController extends Controller
             'title'=>'required',
             'featured'=>'required|image',
             'content'=>'required',
-            'category_id'=>'required'
+            'category_id'=>'required',
+            'tags'=>'required'
         ]);
         $featured=$request->featured;
 
@@ -61,6 +64,7 @@ class postsController extends Controller
             'category_id'=>$request->category_id,
             'slug'=>Str::slug($request->title)
         ]);
+        $post->tags()->attach($request->tags);
         Session::flash('success','Post created successfully');
         return redirect()->back();
     }
@@ -84,7 +88,10 @@ class postsController extends Controller
      */
     public function edit($id)
     {
-        //
+        $post=Post::find($id);
+        return view('admin/posts/edit')->with('post',$post)
+                                        ->with('categories',category::all())
+                                        ->with('tags',Tag::all());
     }
 
     /**
@@ -96,7 +103,25 @@ class postsController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $this->validate($request,[
+            'title'=>'required',
+            'content'=>'required',
+            'category'=>'required'
+        ]);
+        $post=Post::find($id);
+        if($request->hasFile('featured')){
+            $featured=$request->featured;
+            $featured_new_name=time(). $featured->getClientOriginalName();
+            $featured->move('uploads/posts/',$featured_new_name);
+            $post->featured='uploads/posts/'.$featured_new_name;
+        }
+        $post->title=$request->title;
+        $post->content=$request->content;
+        $post->category_id=$request->category;
+        $post->save();
+        $post->tags()->sync($request->tags);
+        Session::flash('success','Post Updated Successflly');
+        return redirect()->back();
     }
 
     /**
