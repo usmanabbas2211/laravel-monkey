@@ -20,6 +20,7 @@
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
     <link href="{{ asset('css/toaster.min.css') }}" rel="stylesheet">
+    @yield('styles')
 </head>
 <body>
     <div id="app">
@@ -112,6 +113,14 @@
                                 <a href="{{route('user.create')}}">Create Users</a>
                             </li>
                             @endif
+                            <li class="list-group-item">
+                                <a href="{{route('user.profile')}}">My Profile</a>
+                            </li>
+                            @if(Auth::user()->admin)
+                            <li class="list-group-item">
+                                <a href="{{route('settings')}}">Settings</a>
+                            </li>
+                            @endif
                         </ul>
                         </ul>
                     </div>
@@ -132,6 +141,7 @@
             </div>
         </main>
     </div>
+    @yield('scripts')
     <script src="{{ asset('js/toaster.min.js') }}" defer></script>
     <script>
         @if(Session::has('success'))
